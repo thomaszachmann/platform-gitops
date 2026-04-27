@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homelab-root
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://git.procilon.duckdns.org/forgejo_admin/platform-gitops.git
+    targetRevision: main
+    path: clusters/homelab
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated: {}
