@@ -5,16 +5,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  sources:
-    - chart: longhorn
-      repoURL: https://charts.longhorn.io/
-      targetRevision: v1.11.1
-      helm:
-        values: |
-          preUpgradeChecker:
-            jobEnabled: false
-          defaultSettings:
-            defaultDataPath: /var/lib/longhorn
+  source:
+    chart: longhorn
+    repoURL: https://charts.longhorn.io
+    targetRevision: 1.11.1
+    helm:
+      values: |
+        preUpgradeChecker:
+          jobEnabled: false
+        defaultSettings:
+          defaultDataPath: /var/lib/longhorn
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
@@ -24,3 +24,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
