@@ -7,20 +7,49 @@ spec:
   project: default
 
   source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: keycloak
-    targetRevision: 22.0.0
+    repoURL: https://codecentric.github.io/helm-charts
+    chart: keycloakx
+    targetRevision: 6.4.0
     helm:
       values: |
-        image:
-          repository: bitnamilegacy/keycloak
-        auth:
-          adminUser: admin
-          adminPassword: admin123
-        proxy: edge
-        postgresql:
-          image:
-            repository: bitnamilegacy/postgresql
+        command:
+          - "/opt/keycloak/bin/kc.sh"
+          - "start"
+          - "--http-enabled=true"
+          - "--http-port=8080"
+          - "--hostname-strict=false"
+          - "--proxy-headers=xforwarded"
+
+        extraEnv: |
+          - name: KEYCLOAK_ADMIN
+            value: admin
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            value: admin123
+          - name: JAVA_OPTS_APPEND
+            value: -Djgroups.dns.query=keycloak-keycloakx-headless
+
+        database:
+          vendor: postgres
+          hostname: keycloak-pg-rw
+          port: 5432
+          database: keycloak
+          existingSecret: keycloak-pg-app
+
+        extraDeploy:
+          - apiVersion: postgresql.cnpg.io/v1
+            kind: Cluster
+            metadata:
+              name: keycloak-pg
+              namespace: keycloak
+            spec:
+              instances: 1
+              storage:
+                size: 5Gi
+                storageClass: longhorn
+              bootstrap:
+                initdb:
+                  database: keycloak
+                  owner: keycloak
 
   destination:
     server: https://kubernetes.default.svc
@@ -32,3 +61,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
