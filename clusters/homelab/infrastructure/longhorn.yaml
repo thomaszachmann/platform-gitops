@@ -16,6 +16,8 @@ spec:
     targetRevision: 1.5.3
     helm:
       values: |
+        preUpgradeChecker:
+          jobEnabled: false
         defaultSettings:
           defaultDataPath: /var/lib/longhorn
   destination:
