@@ -23,6 +23,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
+  ignoreDifferences:
+    - kind: Service
+      name: longhorn-frontend
+      namespace: longhorn-system
+      jsonPointers:
+        - /spec/ports/0/nodePort
   syncPolicy:
     automated:
       prune: true
