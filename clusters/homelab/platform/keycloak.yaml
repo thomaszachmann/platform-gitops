@@ -12,10 +12,15 @@ spec:
     targetRevision: 22.0.0
     helm:
       values: |
+        image:
+          repository: bitnamilegacy/keycloak
         auth:
           adminUser: admin
           adminPassword: admin123
         proxy: edge
+        postgresql:
+          image:
+            repository: bitnamilegacy/postgresql
 
   destination:
     server: https://kubernetes.default.svc
