@@ -15,6 +15,9 @@ spec:
           jobEnabled: false
         defaultSettings:
           defaultDataPath: /var/lib/longhorn
+        service:
+          ui:
+            type: NodePort
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
