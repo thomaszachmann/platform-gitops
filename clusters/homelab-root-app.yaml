@@ -9,8 +9,12 @@ spec:
     repoURL: https://git.procilon.duckdns.org/forgejo_admin/platform-gitops.git
     targetRevision: main
     path: clusters/homelab
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
-    automated: {}
+    automated:
+      prune: true
+      selfHeal: true
