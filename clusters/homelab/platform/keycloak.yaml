@@ -6,53 +6,41 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://codecentric.github.io/helm-charts
-    chart: keycloakx
-    targetRevision: 7.1.11
-    helm:
-      values: |
-        command:
-          - "/opt/keycloak/bin/kc.sh"
-          - "start"
-          - "--http-enabled=true"
-          - "--http-port=8080"
-          - "--hostname-strict=false"
-          - "--proxy-headers=xforwarded"
+  sources:
+    - repoURL: https://codecentric.github.io/helm-charts
+      chart: keycloakx
+      targetRevision: 7.1.11
+      helm:
+        values: |
+          command:
+            - "/opt/keycloak/bin/kc.sh"
+            - "start"
+            - "--http-enabled=true"
+            - "--http-port=8080"
+            - "--hostname-strict=false"
+            - "--proxy-headers=xforwarded"
 
-        extraEnv: |
-          - name: KEYCLOAK_ADMIN
-            value: admin
-          - name: KEYCLOAK_ADMIN_PASSWORD
-            value: admin123
-          - name: JAVA_OPTS_APPEND
-            value: -Djgroups.dns.query=keycloak-keycloakx-headless
+          extraEnv: |
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin123
+            - name: JAVA_OPTS_APPEND
+              value: -Djgroups.dns.query=keycloak-keycloakx-headless
 
-        service:
-          type: NodePort
+          service:
+            type: NodePort
 
-        database:
-          vendor: postgres
-          hostname: keycloak-pg-rw
-          port: 5432
-          database: keycloak
-          existingSecret: keycloak-pg-app
+          database:
+            vendor: postgres
+            hostname: keycloak-pg-rw
+            port: 5432
+            database: keycloak
+            existingSecret: keycloak-pg-app
 
-        extraDeploy:
-          - apiVersion: postgresql.cnpg.io/v1
-            kind: Cluster
-            metadata:
-              name: keycloak-pg
-              namespace: keycloak
-            spec:
-              instances: 1
-              storage:
-                size: 5Gi
-                storageClass: longhorn
-              bootstrap:
-                initdb:
-                  database: keycloak
-                  owner: keycloak
+    - repoURL: https://git.procilon.duckdns.org/forgejo_admin/platform-gitops.git
+      targetRevision: HEAD
+      path: clusters/homelab/platform/keycloak
 
   destination:
     server: https://kubernetes.default.svc
