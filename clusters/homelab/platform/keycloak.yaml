@@ -28,6 +28,9 @@ spec:
           - name: JAVA_OPTS_APPEND
             value: -Djgroups.dns.query=keycloak-keycloakx-headless
 
+        service:
+          type: NodePort
+
         database:
           vendor: postgres
           hostname: keycloak-pg-rw
