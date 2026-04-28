@@ -31,6 +31,9 @@ spec:
           service:
             type: NodePort
 
+          nodeSelector:
+            kubernetes.io/hostname: node5
+
           database:
             vendor: postgres
             hostname: keycloak-pg-rw

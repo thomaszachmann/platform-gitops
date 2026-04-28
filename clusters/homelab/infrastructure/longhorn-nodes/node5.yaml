@@ -14,6 +14,6 @@ spec:
     default-disk-b366c006f4f809eb:
       path: /var/lib/longhorn
       allowScheduling: false
-      evictionRequested: true
+      evictionRequested: false
       storageReserved: 1574011699
       tags: []
