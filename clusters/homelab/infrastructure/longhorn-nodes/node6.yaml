@@ -1,0 +1,19 @@
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: node6
+  namespace: longhorn-system
+spec:
+  disks:
+    disk1:
+      path: /var/lib/longhorn-disk1
+      allowScheduling: true
+      evictionRequested: false
+      storageReserved: 5368709120
+      tags: []
+    default-disk-a50f7347dc671c47:
+      path: /var/lib/longhorn
+      allowScheduling: false
+      evictionRequested: true
+      storageReserved: 1574011699
+      tags: []
